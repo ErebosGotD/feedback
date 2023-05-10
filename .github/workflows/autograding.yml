@@ -1,0 +1,25 @@
+name: Autograding
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  autograding:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '12'
+
+      - name: Build and test
+        run: |
+          javac MessageUtil.java
+          javac -cp .:junit.jar FeedbackTest.java
+          java -cp .:junit.jar:hamcrest.jar org.junit.runner.JUnitCore FeedbackTest
